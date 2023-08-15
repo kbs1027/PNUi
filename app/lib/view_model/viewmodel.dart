@@ -8,17 +8,6 @@ Future<void> insertRss(RssData rssData) async {
       conflictAlgorithm: ConflictAlgorithm.replace);
 }
 
-Future<RssData?> getRss(int id) async {
-  final db = await RssDatabase().database;
-  List<Map<String, dynamic>> maps =
-      await db.query('RssData', where: 'id = ?', whereArgs: [id]);
-
-  if (maps.isNotEmpty) {
-    return RssData.fromMap(maps.first);
-  }
-  return null;
-}
-
 Future<List<RssData>> getAllRss() async {
   final db = await RssDatabase().database;
   final List<Map<String, dynamic>> maps = await db.query('RssData');
