@@ -32,7 +32,7 @@ class _homeState extends State<home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const noticeList()),
+                  MaterialPageRoute(builder: (context) => const NoticeList()),
                 );
               },
               child: const Text('공지사항'),

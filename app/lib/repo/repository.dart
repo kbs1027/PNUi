@@ -1,3 +1,4 @@
+import 'package:app/model/model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
@@ -41,5 +42,42 @@ class RssDatabase {
     ''';
     //SQL 쿼리를 실행하여 테이블을 생성한다.
     db.execute(sql);
+
+    var cse1 = RssData(
+        department: "정보컴퓨터공학부",
+        noticeMenu: "자유게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/2618/rssList.do?row=50");
+
+    var cse2 = RssData(
+        department: "정보컴퓨터공학부",
+        noticeMenu: "경진대회게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/12278/rssList.do?row=50");
+
+    var cse3 = RssData(
+        department: "정보컴퓨터공학부",
+        noticeMenu: "채용게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/2616/rssList.do?row=50");
+
+    var mse1 = RssData(
+        department: "기계공학부",
+        noticeMenu: "자유게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/2618/rssList.do?row=50");
+
+    var mse2 = RssData(
+        department: "기계공학부",
+        noticeMenu: "경진대회게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/2618/rssList.do?row=50");
+
+    var mse3 = RssData(
+        department: "기계공학부",
+        noticeMenu: "홍보게시판",
+        Rss: "https://cse.pusan.ac.kr/bbs/cse/2618/rssList.do?row=50");
+
+    db.insert('RssData', cse1.toMap());
+    db.insert('RssData', cse2.toMap());
+    db.insert('RssData', cse3.toMap());
+    db.insert('RssData', mse1.toMap());
+    db.insert('RssData', mse2.toMap());
+    db.insert('RssData', mse3.toMap());
   }
 }

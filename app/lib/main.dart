@@ -1,5 +1,7 @@
+import 'package:app/model/Departmentmodel.dart';
 import 'package:app/view/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const Landing());
@@ -15,8 +17,12 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: home(),
+    return ChangeNotifierProvider(
+      create: (context) => DepartmentModel(),
+      builder: (context, _) => const MaterialApp(
+          home: Scaffold(
+        body: home(),
+      )),
     );
   }
 }
