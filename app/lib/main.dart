@@ -1,9 +1,10 @@
-import 'package:app/model/Departmentmodel.dart';
+import 'package:app/repo/repository.dart';
 import 'package:app/view/home.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SqlDatabase();
   runApp(const Landing());
 }
 
@@ -17,12 +18,10 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DepartmentModel(),
-      builder: (context, _) => const MaterialApp(
-          home: Scaffold(
+    return const MaterialApp(
+      home: Scaffold(
         body: home(),
-      )),
+      ),
     );
   }
 }

@@ -10,7 +10,32 @@ class departList extends StatefulWidget {
 }
 
 class _departListState extends State<departList> {
-  final List<String> departments = ['정보컴퓨터공학부', '기계공학부', 'Department 3'];
+  final List<String> departments = [
+    '정보컴퓨터공학부',
+    '기계공학부',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+    'Department 3',
+  ];
 
   @override
   Widget build(BuildContext context) {

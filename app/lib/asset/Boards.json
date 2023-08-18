@@ -1,0 +1,53 @@
+{"cse":[{
+    "name":"공지사항",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/2605/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"자유게시판",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/2618/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"경진대회게시판",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/12278/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"채용게시판",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/2616/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"기타행사게시판",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/2617/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"수업게시판",
+    "RssData":"https://cse.pusan.ac.kr/bbs/cse/2615/rssList.do?row=50",
+    "Posts":[]
+}],
+"eec":[{
+    "name":"공지사항",
+    "RssData":"https://eec.pusan.ac.kr/bbs/eehome/2650/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"취업게시판",
+    "RssData":"https://eec.pusan.ac.kr/bbs/eehome/2654/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"자유게시판",
+    "RssData":"https://eec.pusan.ac.kr/bbs/eehome/2655/rssList.do?row=50",
+    "Posts":[]
+}
+],"biz":[{
+    "name":"공지사항",
+    "RssData":"https://biz.pusan.ac.kr/bbs/biz/2557/rssList.do?row=50",
+    "Posts":[]
+},{
+    "name":"취업게시판",
+    "RssData":"https://biz.pusan.ac.kr/bbs/biz/11448/rssList.do?row=50",
+    "Posts":[]
+},
+{
+    "name":"장학게시판",
+    "RssData":"https://biz.pusan.ac.kr/bbs/biz/2558/rssList.do?row=50",
+    "Posts":[]
+}
+]}
