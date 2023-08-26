@@ -12,13 +12,19 @@ class departList extends StatefulWidget {
 
 class _departListState extends State<departList> {
   String? selectedDepartment = '정보컴퓨터공학부';
-  final List<String> departments = [
-    '정보컴퓨터공학부',
-    '경영학부',
-    '전기공학과',
-  ];
-
+  List<Department>? departments;
   User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDepartments();
+  }
+
+  _loadDepartments() async {
+    departments = await SqlDatabase.instance.getAllDepartments();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,36 +43,32 @@ class _departListState extends State<departList> {
               Department department = await SqlDatabase.instance
                   .getDepartmentByName(selectedDepartment!);
 
-              // Assuming that currentUser is the currently logged-in user
-              if (currentUser != null) {
-                currentUser!.department = department.id;
-                await SqlDatabase.instance.updateUserDepartment(currentUser!);
-              } else {
-                User user = User(department: department.id);
-                await SqlDatabase.instance.insertUser(user);
-              }
-
+              print(department.major);
+              print(department.Boards);
               // Close the screen after saving
+              User.instance.department = department;
               Navigator.pop(context, selectedDepartment);
             },
             icon: const Icon(Icons.check),
           ),
         ],
       ),
-      body: Column(
-        children: departments.map((department) {
-          return RadioListTile(
-            title: Text(department),
-            value: department,
-            groupValue: selectedDepartment,
-            onChanged: (value) {
-              setState(() {
-                selectedDepartment = value;
-                // ignore: unused_local_variable
-              });
-            },
-          );
-        }).toList(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: departments?.map((department) {
+                return RadioListTile(
+                  title: Text(department.major!),
+                  value: department.major,
+                  groupValue: selectedDepartment,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedDepartment = value;
+                    });
+                  },
+                );
+              }).toList() ??
+              [],
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:app/model/Board.dart';
 import 'package:app/model/Department.dart';
 import 'package:app/model/Post.dart';
-import 'package:app/model/User.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -17,6 +16,10 @@ class SqlDatabase {
 
   factory SqlDatabase() {
     return instance;
+  }
+
+  Future<void> initDB() async {
+    await _initDataBase();
   }
 
   Future<void> _initDataBase() async {
@@ -97,40 +100,6 @@ class SqlDatabase {
     );
   }
 
-  Future<int> insertPost(Post post) async {
-    return await _database!.insert(
-      Post.tablename,
-      post.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<int> updatePost(Post post) async {
-    return await _database!.update(
-      Post.tablename,
-      post.toJson(),
-      where: '${PostFields.id} = ?',
-      whereArgs: [post.id],
-    );
-  }
-
-  Future<int> insertUser(User user) async {
-    return await _database!.insert(
-      User.tablename,
-      user.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<int> updateUserDepartment(User user) async {
-    return await _database!.update(
-      User.tablename,
-      user.toJson(),
-      where: '${UserFields.id} = ?',
-      whereArgs: [user.id],
-    );
-  }
-
   Future<Department> getDepartmentByName(String name) async {
     final List<Map<String, dynamic>> maps = await _database!.query(
       Department.tablename,
@@ -156,6 +125,10 @@ class SqlDatabase {
     await _database!.delete(Board.tablename);
   }
 
+  Future<void> deleteAllDepartments() async {
+    await _database!.delete(Department.tablename);
+  }
+
   Future<List<Board>> getAllBoards() async {
     List<Map<String, dynamic>> boardMaps =
         await _database!.query(Board.tablename);
@@ -173,5 +146,54 @@ class SqlDatabase {
     }).toList();
 
     return boards;
+  }
+
+  Future<List<Department>> getAllDepartments() async {
+    List<Map<String, dynamic>> departmentMaps =
+        await _database!.query(Department.tablename);
+
+    List<Department> departments = departmentMaps.map((departmentMap) {
+      int id = departmentMap[DepartmentFields.id];
+      String major = departmentMap[DepartmentFields.major];
+      List<int> boards = departmentMap[DepartmentFields.Boards];
+
+      print('Department ID: $id');
+      print('Department Major: $major');
+      print('Department Boards: $boards');
+
+      return Department.fromJson(departmentMap);
+    }).toList();
+
+    return departments;
+  }
+
+  Future<Board?> getBoardById(int? boardId) async {
+    List<Map<String, dynamic>> boardMaps = await _database!.query(
+      Board.tablename,
+      where: '${BoardFields.id} = ?',
+      whereArgs: [boardId],
+    );
+
+    if (boardMaps.isNotEmpty) {
+      Map<String, dynamic> boardMap = boardMaps.first;
+      int id = boardMap[BoardFields.id];
+      String RssData = boardMap[BoardFields.RssData];
+      String name = boardMap[BoardFields.name];
+      List<int> posts = boardMap[BoardFields.Posts];
+
+      print('Board ID: $id');
+      print('Board RssData: $RssData');
+      print('Board Name: $name');
+      print('Board Posts: $posts');
+
+      return Board(
+        id: id,
+        RssData: RssData,
+        name: name,
+        Posts: posts,
+      );
+    }
+
+    return null; // Return null if no board found with the specified id
   }
 }

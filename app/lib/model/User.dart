@@ -1,3 +1,7 @@
+import 'package:app/model/Board.dart';
+import 'package:app/model/Department.dart';
+import 'package:app/model/Post.dart';
+
 class UserFields {
   static const String id = 'id';
   static const String department = 'department';
@@ -6,30 +10,13 @@ class UserFields {
 }
 
 class User {
-  static String tablename = 'User';
-  final int? id;
-  int? department;
-  List<int>? subscribes;
-  List<int>? favorite;
+  Department? department;
+  List<Board>? subscribes;
+  List<Post>? favorite;
 
-  User({
-    this.id,
-    required this.department,
-    this.subscribes,
-    this.favorite,
-  });
+  User._privateConstructor();
 
-  Map<String, dynamic> toJson() {
-    return {
-      UserFields.department: department,
-      UserFields.subscribes: subscribes,
-      UserFields.favorite: favorite
-    };
-  }
+  static final User _instance = User._privateConstructor();
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        department: json['department'],
-        subscribes: json['subscribes'],
-        favorite: json['favorite'],
-      );
+  static User get instance => _instance;
 }

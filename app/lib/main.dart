@@ -1,10 +1,12 @@
 import 'package:app/repo/repository.dart';
+import 'package:app/service/InsertBoard.dart';
 import 'package:app/view/home.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SqlDatabase();
+  await SqlDatabase.instance.initDB();
+  await fetchBoardsFromJsonAsset();
   runApp(const Landing());
 }
 
