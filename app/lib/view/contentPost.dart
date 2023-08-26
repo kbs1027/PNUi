@@ -1,5 +1,6 @@
 import 'package:app/model/Board.dart';
 import 'package:app/model/Post.dart';
+import 'package:app/view/Webview.dart';
 import 'package:xml/xml.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -54,7 +55,14 @@ class _contentPostState extends State<contentPost> {
                 return ListTile(
                   title: Text(snapshot.data![index].title!),
                   subtitle: Text(snapshot.data![index].content!),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              map(url: snapshot.data![index].link!)),
+                    );
+                  },
                 );
               },
             );
