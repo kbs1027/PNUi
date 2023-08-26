@@ -1,8 +1,10 @@
-import 'package:app/model/Departmentmodel.dart';
-import 'package:app/model/model.dart';
-import 'package:app/view_model/viewmodel.dart';
+import 'dart:convert';
+
+import 'package:app/model/Board.dart';
+import 'package:app/model/Department.dart';
+import 'package:app/repo/repository.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 class NoticeList extends StatefulWidget {
   const NoticeList({super.key});
@@ -12,55 +14,71 @@ class NoticeList extends StatefulWidget {
 }
 
 class _NoticeListState extends State<NoticeList> {
-  final List<String> departments = ['정보컴퓨터공학부', '기계공학부', 'Department 3'];
+  List<Board> boards = [];
+  List<int?> boardIds = [];
 
-  List<RssData> listData = []; // Data to display in the ListView
+  @override
+  void initState() {
+    super.initState();
+    fetchBoardsFromJsonAsset().then((parsedBoards) {
+      setState(() {
+        boards = parsedBoards;
+      });
+    });
+  }
+
+  Future<List<Board>> fetchBoardsFromJsonAsset() async {
+    SqlDatabase.instance.deleteAllBoards();
+    final String boardData =
+        await rootBundle.loadString('assets/json/Boards.json');
+    final String departmentData =
+        await rootBundle.loadString('assets/json/Departments.json');
+    final Map<String, dynamic> jsonBoardData = json.decode(boardData);
+    final Map<String, dynamic> jsonDepartmentData = json.decode(departmentData);
+
+    List<Board> parsedBoards = [];
+    for (String category in jsonBoardData.keys) {
+      boardIds.clear();
+      print("Current Category: $category");
+      Department department = Department.fromJson(jsonDepartmentData[category]);
+      for (var boardData in jsonBoardData[category]) {
+        Board board = Board.fromJson(boardData);
+        int? insertedBoardId = await SqlDatabase.instance.insertBoard(board);
+        print(await SqlDatabase.instance
+            .getAllBoards()); // Wait for the insertion to complete
+        parsedBoards.add(board);
+        boardIds.add(insertedBoardId);
+        print(boardIds);
+      }
+      department.UpdateBoards(boardIds);
+      print("department.Boards = ${department.Boards}");
+      SqlDatabase.instance.insertDepartment(department);
+      // Department department = Department.fromJson(jsonDepartmentData[category]);
+      // print(department);
+      // print(department.Boards);
+      // print(department.id);
+      // print(boardIds);
+      // department.Boards = boardIds;
+      // SqlDatabase.instance.insertDepartment(department);
+    }
+
+    return parsedBoards;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Access the DepartmentModel using Provider
-    final departmentModel =
-        Provider.of<DepartmentModel>(context, listen: false);
-
-    // If the selectedDepartmentIndex is null, we default to an empty string.
-    int? currentDepartment = departmentModel.selectedDepartmentIndex;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('게시판목록'),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
+        title: const Text('Board List'),
       ),
-      body: Column(
-        children: [
-          OutlinedButton(
-            onPressed: () async {
-              var list =
-                  await getAllRssByDepartment(departments[currentDepartment!]);
-
-              setState(() {
-                listData = list;
-              });
-            },
-            child: const Text('SELECT'),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: listData.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(listData[index].department),
-                  subtitle: Text(
-                      '${listData[index].noticeMenu} / ${listData[index].Rss}'),
-                );
-              },
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        itemCount: boards.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(boards[index].name!),
+            subtitle: Text(boards[index].RssData!),
+          );
+        },
       ),
     );
   }

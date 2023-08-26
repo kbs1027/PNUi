@@ -8,7 +8,7 @@ class Department {
   static String tablename = 'Departments';
   final int? id;
   String? major;
-  List<int>? Boards;
+  List<int?>? Boards;
 
   Department({
     this.id,
@@ -16,14 +16,20 @@ class Department {
     required this.Boards,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'major': major,
-      'Boards': Boards,
+      DepartmentFields.id: id,
+      DepartmentFields.major: major,
+      DepartmentFields.Boards: Boards,
     };
   }
 
+  UpdateBoards(List<int?> Boards) {
+    this.Boards = Boards;
+  }
+
   factory Department.fromJson(Map<String, dynamic> json) => Department(
+        id: json['id'],
         major: json['major'],
         Boards: json['Boards'],
       );

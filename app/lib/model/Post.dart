@@ -16,17 +16,15 @@ class Post {
     required this.content,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'title': title,
-      'contet': content,
+      PostFields.title: title,
+      PostFields.content: content,
     };
   }
 
-  static Post fromMap(Map<String, dynamic> map) {
-    return Post(
-      title: map['title'],
-      content: map['content'],
-    );
-  }
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
+        title: json['title'],
+        content: json['content'],
+      );
 }

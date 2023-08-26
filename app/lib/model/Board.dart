@@ -19,20 +19,18 @@ class Board {
     required this.Posts,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'RssData': RssData,
-      'Posts': Posts,
+      BoardFields.name: name,
+      BoardFields.RssData: RssData,
+      BoardFields.Posts: Posts,
     };
   }
 
-  // 데이터베이스에서 가져온 데이터를 RssData 객체로 변환하는 메서드를 추가합니다.
-  factory Board.fromMap(Map<String, dynamic> json) {
-    return Board(
-      name: json['name'],
-      RssData: json['RssData'],
-      Posts: json['Posts'],
-    );
-  }
+  factory Board.fromJson(Map<String, dynamic> json) => Board(
+        id: json[BoardFields.id], // 여기서 id를 추가해줘야 합니다.
+        name: json[BoardFields.name],
+        RssData: json[BoardFields.RssData],
+        Posts: List<int>.from(json[BoardFields.Posts]),
+      );
 }
