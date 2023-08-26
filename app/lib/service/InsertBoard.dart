@@ -18,28 +18,30 @@ Future<void> fetchBoardsFromJsonAsset() async {
   final Map<String, dynamic> jsonBoardData = json.decode(boardData);
   final Map<String, dynamic> jsonDepartmentData = json.decode(departmentData);
 
-  List<Board> parsedBoards = [];
   for (String category in jsonBoardData.keys) {
     boardIds.clear();
+
     print("Current Category: $category");
+
     Department department = Department.fromJson(jsonDepartmentData[category]);
+
     for (var boardData in jsonBoardData[category]) {
       Board board = Board.fromJson(boardData);
+
       int? insertedBoardId = await SqlDatabase.instance.insertBoard(board);
+
       print(await SqlDatabase.instance
           .getAllBoards()); // Wait for the insertion to complete
+
       boardIds.add(insertedBoardId);
+
       print(boardIds);
     }
+
     department.UpdateBoards(boardIds);
+
     print("department.Boards = ${department.Boards}");
+
     SqlDatabase.instance.insertDepartment(department);
-    // Department department = Department.fromJson(jsonDepartmentData[category]);
-    // print(department);
-    // print(department.Boards);
-    // print(department.id);
-    // print(boardIds);
-    // department.Boards = boardIds;
-    // SqlDatabase.instance.insertDepartment(department);
   }
 }

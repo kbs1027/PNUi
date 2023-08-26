@@ -62,9 +62,22 @@ class SqlDatabase {
     CREATE TABLE ${Post.tablename} (
       ${PostFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
       ${PostFields.title} TEXT not null,
+      ${PostFields.link} TEXT not null,
       ${PostFields.content} TEXT not null
     )
   ''');
+  }
+
+  Future<int> insertPost(Post post) async {
+    print("insert Post Data");
+    print(post.title);
+    print(post.link);
+    print(post.content);
+    return await _database!.insert(
+      Post.tablename,
+      post.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<int> insertDepartment(Department department) async {

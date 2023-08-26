@@ -61,7 +61,7 @@ class _NoticeListState extends State<NoticeList> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const contentPost()),
+                                            contentPost(board: board)),
                                   );
                                 },
                                 child: Text(board!.name!), // 게시판 이름으로 버튼 텍스트 설정
