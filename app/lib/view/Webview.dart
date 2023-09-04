@@ -11,11 +11,6 @@ class map extends StatefulWidget {
 
 class _mapState extends State<map> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     String? url = widget.url ?? "";
 

@@ -21,7 +21,30 @@ class _NoticeListState extends State<NoticeList> {
   }
 
   _loadBoardByUser() async {
-    boards = User.instance.department!.Boards;
+    if (User.instance.department == null ||
+        User.instance.department!.Boards == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("알림"),
+              content: const Text("학과를 설정해 주세요"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      });
+    } else {
+      boards = User.instance.department!.Boards;
+    }
     setState(() {});
   }
 
