@@ -1,5 +1,7 @@
 import 'package:app/model/Board.dart';
 import 'package:app/model/Post.dart';
+import 'package:app/model/User.dart';
+import 'package:app/repo/repository.dart';
 import 'package:app/view/Webview.dart';
 import 'package:xml/xml.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +18,19 @@ class contentPost extends StatefulWidget {
 
 class _contentPostState extends State<contentPost> {
   late Future<List<Post>> futurePosts;
+  final Set<String> favoritedPostIds = <String>{};
 
   @override
   void initState() {
     super.initState();
     futurePosts = fetchAndParsePosts();
+    if (User.instance.favorite != null) {
+      for (Post post in User.instance.favorite!) {
+        if (post.link != null) {
+          favoritedPostIds.add(post.link!);
+        }
+      }
+    }
   }
 
   Future<List<Post>> fetchAndParsePosts() async {
@@ -52,9 +62,28 @@ class _contentPostState extends State<contentPost> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
+                final post = snapshot.data![index];
+                final isFavorited = favoritedPostIds.contains(post.link);
                 return ListTile(
-                  title: Text(snapshot.data![index].title!),
-                  subtitle: Text(snapshot.data![index].content!),
+                  title: Text(post.title!),
+                  subtitle: Text(post.content!),
+                  trailing: IconButton(
+                    icon: Icon(
+                        isFavorited ? Icons.favorite : Icons.favorite_border),
+                    onPressed: () {
+                      setState(() {
+                        if (isFavorited) {
+                          favoritedPostIds.remove(post.link);
+                          User.instance
+                              .removeFavorite(post); // Moved to User class
+                        } else {
+                          favoritedPostIds.add(post.link!);
+                          User.instance
+                              .addFavorite(post); // Moved to User class
+                        }
+                      });
+                    },
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -82,7 +111,9 @@ List<Post> parseRssToPosts(String rssData) {
     var link = item.findElements('link').first.text;
     var content = item.findElements('description').first.text;
 
-    return Post(title: title, link: link, content: content);
+    Post post = Post(title: title, link: link, content: content);
+    SqlDatabase.instance.insertPost(post);
+    return post;
   }).toList();
 }
 

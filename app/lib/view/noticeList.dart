@@ -35,7 +35,7 @@ class _NoticeListState extends State<NoticeList> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("OK"),
+                  child: const Text("확인"),
                 ),
               ],
             );
@@ -56,7 +56,7 @@ class _NoticeListState extends State<NoticeList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Board List'),
+          title: const Text('게시판 목록'),
         ),
         body: SingleChildScrollView(
           child: Column(children: [

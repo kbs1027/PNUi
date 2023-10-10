@@ -33,4 +33,8 @@ class Board {
         RssData: json[BoardFields.RssData],
         Posts: List<int>.from(json[BoardFields.Posts]),
       );
+
+  void updatePosts(List<int> newPosts) {
+    Posts = newPosts;
+  }
 }

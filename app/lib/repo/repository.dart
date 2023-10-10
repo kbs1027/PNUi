@@ -63,16 +63,14 @@ class SqlDatabase {
       ${PostFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
       ${PostFields.title} TEXT not null,
       ${PostFields.link} TEXT not null,
-      ${PostFields.content} TEXT not null
+      ${PostFields.content} TEXT not null,
+      UNIQUE(${PostFields.title}, ${PostFields.link}, ${PostFields.content})
     )
   ''');
   }
 
   Future<int> insertPost(Post post) async {
-    print("insert Post Data");
-    print(post.title);
-    print(post.link);
-    print(post.content);
+    print(post.id);
     return await _database!.insert(
       Post.tablename,
       post.toJson(),
@@ -136,6 +134,10 @@ class SqlDatabase {
 
   Future<void> deleteAllBoards() async {
     await _database!.delete(Board.tablename);
+  }
+
+  Future<void> deleteAllPosts() async {
+    await _database!.delete(Post.tablename);
   }
 
   Future<void> deleteAllDepartments() async {
@@ -208,5 +210,36 @@ class SqlDatabase {
     }
 
     return null; // Return null if no board found with the specified id
+  }
+
+  Future<Post?> getPostById(int? postId) async {
+    List<Map<String, dynamic>> PostMaps = await _database!.query(
+      Post.tablename,
+      where: '${PostFields.id} = ?',
+      whereArgs: [postId],
+    );
+
+    if (PostMaps.isNotEmpty) {
+      Map<String, dynamic> PostMap = PostMaps.first;
+      int id = PostMap[PostFields.id];
+      String title = PostMap[PostFields.title];
+      String link = PostMap[PostFields.link];
+      String content = PostMap[PostFields.content];
+
+      print("Post Mapping");
+
+      return Post(id: id, title: title, link: link, content: content);
+    }
+
+    return null;
+  }
+
+  Future<void> updateBoard(Board board) async {
+    await _database!.update(
+      Board.tablename,
+      board.toJson(),
+      where: '${BoardFields.id} = ?',
+      whereArgs: [board.id],
+    );
   }
 }

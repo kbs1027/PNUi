@@ -14,9 +14,22 @@ class User {
   List<Board>? subscribes;
   List<Post>? favorite;
 
-  User._privateConstructor();
+  User._privateConstructor() {
+    favorite = [];
+    subscribes = [];
+  }
 
   static final User _instance = User._privateConstructor();
 
   static User get instance => _instance;
+
+  void addFavorite(Post post) {
+    favorite?.add(post);
+    print(favorite);
+  }
+
+  void removeFavorite(Post post) {
+    favorite?.removeWhere((element) => element.link == post.link);
+    print(favorite);
+  }
 }

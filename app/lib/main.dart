@@ -7,6 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SqlDatabase.instance.initDB();
   await fetchBoardsFromJsonAsset();
+  // Timer.periodic(const Duration(seconds: 30), (Timer t) => backgroundTask());
   runApp(const Landing());
 }
 
