@@ -9,9 +9,10 @@ List<Post> parseRssToPosts(String rssData) {
   return items.map((item) {
     var title = item.findElements('title').first.text;
     var link = item.findElements('link').first.text;
+    var pubDate = item.findElements('pubDate').first.text;
     var content = item.findElements('description').first.text;
 
-    return Post(title: title, link: link, content: content);
+    return Post(title: title, link: link, pubDate: pubDate, content: content);
   }).toList();
 }
 

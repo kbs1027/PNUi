@@ -66,7 +66,7 @@ class _contentPostState extends State<contentPost> {
                 final isFavorited = favoritedPostIds.contains(post.link);
                 return ListTile(
                   title: Text(post.title!),
-                  subtitle: Text(post.content!),
+                  subtitle: Text(post.pubDate!),
                   trailing: IconButton(
                     icon: Icon(
                         isFavorited ? Icons.favorite : Icons.favorite_border),
@@ -109,9 +109,11 @@ List<Post> parseRssToPosts(String rssData) {
   return items.map((item) {
     var title = item.findElements('title').first.text;
     var link = item.findElements('link').first.text;
+    var pubDate = item.findElements('pubDate').first.text;
     var content = item.findElements('description').first.text;
 
-    Post post = Post(title: title, link: link, content: content);
+    Post post =
+        Post(title: title, link: link, pubDate: pubDate, content: content);
     SqlDatabase.instance.insertPost(post);
     return post;
   }).toList();

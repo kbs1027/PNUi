@@ -63,8 +63,9 @@ class SqlDatabase {
       ${PostFields.id} INTEGER PRIMARY KEY AUTOINCREMENT,
       ${PostFields.title} TEXT not null,
       ${PostFields.link} TEXT not null,
+      ${PostFields.pubDate} TEXT not null,
       ${PostFields.content} TEXT not null,
-      UNIQUE(${PostFields.title}, ${PostFields.link}, ${PostFields.content})
+      UNIQUE(${PostFields.title}, ${PostFields.link},${PostFields.content})
     )
   ''');
   }
@@ -224,11 +225,13 @@ class SqlDatabase {
       int id = PostMap[PostFields.id];
       String title = PostMap[PostFields.title];
       String link = PostMap[PostFields.link];
+      String pubDate = PostMap[PostFields.pubDate];
       String content = PostMap[PostFields.content];
 
       print("Post Mapping");
 
-      return Post(id: id, title: title, link: link, content: content);
+      return Post(
+          id: id, title: title, link: link, pubDate: pubDate, content: content);
     }
 
     return null;
